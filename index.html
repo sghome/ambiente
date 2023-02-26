@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - 360 video - Aframe - halfpage</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="myAframe" style="width:100%;height:100%">
+</div>
+<!-- partial -->
+  <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script><script  src="./script.js"></script>
+
+
+<!-- partial:index.partial.html -->
+<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@fb96ab2/dist/aframe-extras.min.js"></script>
+<script>
+
+	AFRAME.registerComponent( 'collide-trigger', {
+		schema: { objects: { default: '' } },
+		init: function () {
+
+			// Retrieve targets...
+			var targets = document.querySelectorAll( this.data.objects );
+			if( !targets.length ) return;
+
+			// While intersecting (fired many times)...
+			this.el.addEventListener( 'hit', ( e ) => {
+				for( let i = 0; i < targets.length; i ++ ) {
+
+					// Skip if we already emitted the event...
+					if( targets[ i ].classList.contains( 'has-hit' ) ) continue;
+
+					// Add the class, and emit the event...
+					targets[ i ].classList.add( 'has-hit' );
+					targets[ i ].emit( 'hit', [], false );
+
+				}
+			} );
+
+			// When intersection ends (fired one time)...
+			this.el.addEventListener( 'hitend', ( e ) => {
+				for( let i = 0; i < targets.length; i ++ ) {
+					
+					// Skip if we already emitted the event...
+					if( !targets[ i ].classList.contains( 'has-hit' ) ) continue;
+
+					// Remove the class, and emit the event...
+					targets[ i ].classList.remove( 'has-hit' );
+					targets[ i ].emit( 'hitend', [], false );
+
+				}
+			} );
+
+		}
+	} );
+
+</script>
+
+
+
+
+<a-scene>
+
+	<!-- PRELOADS -->
+
+	<a-assets>
+
+		<img crossorigin="anonymous" src="https://raw.githubusercontent.com/Pentagear/glb-collection/main/nav-mesh-demo/MaterialSkybox.jpg?v=8" id="MaterialSkybox" />
+
+		<a-asset-item crossorigin="anonymous" src="https://cdn.glitch.me/c536c49d-7661-4fd9-81b8-918d12539028/3d.glb" id="MeshDoorPanel"></a-asset-item>
+		
+
+	</a-assets>
+
+
+
+	
+	<a-entity id="incline-n" rotation="0 0 0">
+		<a-entity gltf-model="#MeshDoorPanel" position="0 1.125 -2.55" rotation="0 0 0" animation__hit="property: position; to: 0.6 1.125 -2.55; dur: 500; startEvents: hit;" animation__hitend="property: position; to: 0 1.125 -2.55; dur: 500; startEvents: hitend;" class="door"></a-entity>
+		<a-entity gltf-model="#MeshDoorPanel" position="0 1.125 -2.55" rotation="0 0 180" animation__hit="property: position; to: -0.6 1.125 -2.55; dur: 500; startEvents: hit;" animation__hitend="property: position; to: 0 1.125 -2.55; dur: 500; startEvents: hitend;" class="door"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 0 -3" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 2.25 -3" rotation="0 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 2.432183 -3.770689" rotation="26.6 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 0.420336 -4.778147" rotation="26.6 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineBody" position="0 4.5 -2.875" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineFrame" position="0 0 -2.75" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineFrame" position="0 0.532276 -5.001685" rotation="-26.6 180 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineLong" position="-0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineLong" position="0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 0 -2.55" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 2.25 -2.55" rotation="0 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 2.633674 -4.173058" rotation="26.6 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 0.621828 -5.180516" rotation="26.6 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineShort" position="-0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineShort" position="0.1875 4.5 -2.875"></a-entity>
+		<a-entity light="type: point; intensity: 0.5; distance: 1.0; decay: 1.0; color: #F00;" position="0 2.431995 -3.363856"></a-entity>
+	</a-entity>
+	
+	<a-entity id="incline-e" rotation="0 -90 0">
+		<a-entity gltf-model="#MeshDoorPanel" position="0 1.125 -2.55" rotation="0 0 0" animation__hit="property: position; to: 0.6 1.125 -2.55; dur: 500; startEvents: hit;" animation__hitend="property: position; to: 0 1.125 -2.55; dur: 500; startEvents: hitend;" class="door"></a-entity>
+		<a-entity gltf-model="#MeshDoorPanel" position="0 1.125 -2.55" rotation="0 0 180" animation__hit="property: position; to: -0.6 1.125 -2.55; dur: 500; startEvents: hit;" animation__hitend="property: position; to: 0 1.125 -2.55; dur: 500; startEvents: hitend;" class="door"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 0 -3" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 2.25 -3" rotation="0 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 2.432183 -3.770689" rotation="26.6 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 0.420336 -4.778147" rotation="26.6 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineBody" position="0 4.5 -2.875" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineFrame" position="0 0 -2.75" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineFrame" position="0 0.532276 -5.001685" rotation="-26.6 180 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineLong" position="-0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineLong" position="0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 0 -2.55" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 2.25 -2.55" rotation="0 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 2.633674 -4.173058" rotation="26.6 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 0.621828 -5.180516" rotation="26.6 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineShort" position="-0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineShort" position="0.1875 4.5 -2.875"></a-entity>
+		<a-entity light="type: point; intensity: 0.5; distance: 1.0; decay: 1.0; color: #F00;" position="0 2.431995 -3.363856"></a-entity>
+	</a-entity>
+	
+	<a-entity id="incline-s" rotation="0 180 0">
+		<a-entity gltf-model="#MeshDoorPanel" position="0 1.125 -2.55" rotation="0 0 0" animation__hit="property: position; to: 0.6 1.125 -2.55; dur: 500; startEvents: hit;" animation__hitend="property: position; to: 0 1.125 -2.55; dur: 500; startEvents: hitend;" class="door"></a-entity>
+		<a-entity gltf-model="#MeshDoorPanel" position="0 1.125 -2.55" rotation="0 0 180" animation__hit="property: position; to: -0.6 1.125 -2.55; dur: 500; startEvents: hit;" animation__hitend="property: position; to: 0 1.125 -2.55; dur: 500; startEvents: hitend;" class="door"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 0 -3" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 2.25 -3" rotation="0 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 2.432183 -3.770689" rotation="26.6 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 0.420336 -4.778147" rotation="26.6 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineBody" position="0 4.5 -2.875" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineFrame" position="0 0 -2.75" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineFrame" position="0 0.532276 -5.001685" rotation="-26.6 180 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineLong" position="-0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineLong" position="0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 0 -2.55" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 2.25 -2.55" rotation="0 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 2.633674 -4.173058" rotation="26.6 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 0.621828 -5.180516" rotation="26.6 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineShort" position="-0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineShort" position="0.1875 4.5 -2.875"></a-entity>
+		<a-entity light="type: point; intensity: 0.5; distance: 1.0; decay: 1.0; color: #F00;" position="0 2.431995 -3.363856"></a-entity>
+	</a-entity>
+	
+	<a-entity id="incline-w" rotation="0 90 0">
+		<a-entity gltf-model="#MeshDoorPanel" position="0 1.125 -2.55" rotation="0 0 0" animation__hit="property: position; to: 0.6 1.125 -2.55; dur: 500; startEvents: hit;" animation__hitend="property: position; to: 0 1.125 -2.55; dur: 500; startEvents: hitend;" class="door"></a-entity>
+		<a-entity gltf-model="#MeshDoorPanel" position="0 1.125 -2.55" rotation="0 0 180" animation__hit="property: position; to: -0.6 1.125 -2.55; dur: 500; startEvents: hit;" animation__hitend="property: position; to: 0 1.125 -2.55; dur: 500; startEvents: hitend;" class="door"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 0 -3" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 2.25 -3" rotation="0 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 2.432183 -3.770689" rotation="26.6 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineAnchor" position="0 0.420336 -4.778147" rotation="26.6 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineBody" position="0 4.5 -2.875" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineFrame" position="0 0 -2.75" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineFrame" position="0 0.532276 -5.001685" rotation="-26.6 180 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineLong" position="-0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineLong" position="0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 0 -2.55" rotation="0 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 2.25 -2.55" rotation="0 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 2.633674 -4.173058" rotation="26.6 0 180"></a-entity>
+		<a-entity gltf-model="#MeshInclineSeal" position="0 0.621828 -5.180516" rotation="26.6 0 0"></a-entity>
+		<a-entity gltf-model="#MeshInclineShort" position="-0.1875 4.5 -2.875"></a-entity>
+		<a-entity gltf-model="#MeshInclineShort" position="0.1875 4.5 -2.875"></a-entity>
+		<a-entity light="type: point; intensity: 0.5; distance: 1.0; decay: 1.0; color: #F00;" position="0 2.431995 -3.363856"></a-entity>
+	</a-entity>
+
+	<!-- PLAYER -->
+
+	<!-- Navigation Mesh -->
+	<a-entity gltf-model="#MeshNavigation" visible="false" nav-mesh></a-entity>
+
+	<!-- Camera Rig -->
+	<a-entity movement-controls="constrainToNavMesh: true">
+		<a-entity position="0 1.6 0" look-controls="pointerLockEnabled: true" camera></a-entity>
+		<a-sphere position="0 1.6 0" radius="0.05" segments-height="8" segments-width="16" material="color: #0FF; wireframe: true" sphere-collider="objects: [collide-trigger]" visible="false"></a-sphere>
+		<a-sky position="0 1.6 0" src="#MaterialSkybox"></a-sky>
+	</a-entity>
+
+</a-scene>
+<!-- partial -->
+
+
+
+
+</body>
+</html>
